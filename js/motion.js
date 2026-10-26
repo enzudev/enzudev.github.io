@@ -108,3 +108,41 @@ document.addEventListener("DOMContentLoaded", () => {
     if (event.animationName === "logo-type-caret") brand.classList.replace("typing", "typed");
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (!document.documentElement.classList.contains("motion")) return;
+  document.querySelectorAll(".demos").forEach((details) => {
+    const summary = details.querySelector("summary");
+    const duration = 450;
+    const easing = "cubic-bezier(0.2, 0.7, 0.2, 1)";
+    let animation = null;
+
+    details.querySelectorAll(":scope > ul > li").forEach((item, index) => item.style.setProperty("--i", index));
+    details.classList.toggle("is-open", details.open);
+    details.addEventListener("toggle", () => details.classList.toggle("is-open", details.open));
+
+    function run(from, to, onDone) {
+      if (animation) animation.cancel();
+      details.style.overflow = "hidden";
+      animation = details.animate({ height: [`${from}px`, `${to}px`] }, { duration, easing });
+      animation.onfinish = () => {
+        animation = null;
+        details.style.overflow = "";
+        onDone();
+      };
+    }
+
+    summary.addEventListener("click", (event) => {
+      event.preventDefault();
+      const from = details.offsetHeight;
+      if (details.open && details.classList.contains("is-open")) {
+        details.classList.remove("is-open");
+        run(from, summary.offsetHeight, () => { details.open = false; });
+      } else {
+        details.open = true;
+        details.classList.add("is-open");
+        run(from, details.scrollHeight, () => {});
+      }
+    });
+  });
+});

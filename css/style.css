@@ -1743,6 +1743,19 @@ html.motion .reveal.is-in .slashed li {
   transition-delay: calc(var(--i, 0) * 0.03s + 0.1s);
 }
 
+html.motion .demos li {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+html.motion .demos.is-open li {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.45s ease, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: calc(var(--i, 0) * 0.07s + 0.1s);
+}
+
 @supports (animation-timeline: scroll()) {
   body::after {
     content: "";
